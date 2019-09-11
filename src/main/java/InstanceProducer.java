@@ -3,6 +3,10 @@ import entity.ClusterInstance;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import util.Constant;
+
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.Random;
 
 /**
@@ -14,11 +18,14 @@ import java.util.Random;
  */
 public class InstanceProducer {
     public static void main(String[] args) {
-        Producer<String, String> producer = new KafkaProducer<>(Constant.props);
+        Producer<String, String> producer = new KafkaProducer<>(Constant.producerProps);
         Random random = new Random();
         ClusterInstance instance = new ClusterInstance();
-        for (int i = 0; i < 100; i++) {
-            instance.setTimestamp(System.currentTimeMillis());
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Timestamp now = new Timestamp(System.currentTimeMillis());
+        for (int i = 0; i < 100000; i++) {
+//        while (true) {
+            instance.setTimestamp(simpleDateFormat.format(now.getTime()));
             instance.setI1(random.nextDouble() * 100);
             instance.setI2(random.nextDouble() * 100);
             instance.setI3(random.nextDouble() * 100);
@@ -30,6 +37,11 @@ public class InstanceProducer {
 //            }
             //不过滤
             producer.send(new ProducerRecord<>("edge", instance.getTimestamp(), JSON.toJSONString(instance)));
+//            try {
+//                Thread.sleep(200);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
         }
 
         producer.close();

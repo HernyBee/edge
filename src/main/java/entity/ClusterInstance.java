@@ -19,8 +19,8 @@ public class ClusterInstance {
         return timestamp;
     }
 
-    public void setTimestamp(long timestamp) {
-        this.timestamp = String.valueOf(timestamp);
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
     }
 
     public double getI1() {

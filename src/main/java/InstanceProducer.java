@@ -37,6 +37,9 @@ public class InstanceProducer {
 //            }
             //不过滤
             producer.send(new ProducerRecord<>("edge", instance.getTimestamp(), JSON.toJSONString(instance)));
+            if ((i + 1) % 1000 == 0) {
+                System.out.println("已发送第" + (i + 1) + "条");
+            }
 //            try {
 //                Thread.sleep(200);
 //            } catch (InterruptedException e) {

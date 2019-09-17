@@ -1,3 +1,5 @@
+package kafka;
+
 import com.alibaba.fastjson.JSON;
 import entity.ClusterInstance;
 import org.apache.kafka.clients.producer.KafkaProducer;
@@ -5,26 +7,28 @@ import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import util.Constant;
 
+import java.util.concurrent.TimeUnit;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Random;
 
 /**
- * title: InstanceProducer
- * projectName： edge
- * author： 张政淇
- * date： 2019/9/6
- * time： 17:10
+ * @ClassName: kafka.ProducerThread
+ * @Description: TODO
+ * @Author: zhangzhengqi
+ * @DateTime: 2019/9/16 12:50
+ * @Version: 1.0
  */
-public class InstanceProducer {
-    public static void main(String[] args) {
+public class ProducerThread implements Runnable {
+
+    @Override
+    public void run() {
         Producer<String, String> producer = new KafkaProducer<>(Constant.producerProps);
         Random random = new Random();
         ClusterInstance instance = new ClusterInstance();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Timestamp now = new Timestamp(System.currentTimeMillis());
         for (int i = 0; i < 100000; i++) {
-//        while (true) {
             instance.setTimestamp(simpleDateFormat.format(now.getTime()));
             instance.setI1(random.nextDouble() * 100);
             instance.setI2(random.nextDouble() * 100);
@@ -37,16 +41,15 @@ public class InstanceProducer {
 //            }
             //不过滤
             producer.send(new ProducerRecord<>("edge", instance.getTimestamp(), JSON.toJSONString(instance)));
-            if ((i + 1) % 1000 == 0) {
-                System.out.println("已发送第" + (i + 1) + "条");
+            try {
+                TimeUnit.MILLISECONDS.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-//            try {
-//                Thread.sleep(200);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
+            if ((i + 1) % 1000 == 0) {
+                System.out.println("线程:" + Thread.currentThread().getName() + "已发送第" + (i + 1) + "条");
+            }
         }
-
         producer.close();
     }
 }

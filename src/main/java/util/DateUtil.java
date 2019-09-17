@@ -10,10 +10,9 @@ import	java.text.SimpleDateFormat;
  * @Version: 1.0
  */
 public class DateUtil {
-    private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    Timestamp now = new Timestamp(System.currentTimeMillis());
+    private static final String FORMAT = "yyyy-MM-dd HH:mm:ss";
     public static String getStandardDateTime(long timestamp) {
-        return simpleDateFormat.format(timestamp);
-
+        SimpleDateFormat sdf = new SimpleDateFormat(FORMAT);
+        return(sdf.format(timestamp));
     }
 }

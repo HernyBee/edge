@@ -12,7 +12,7 @@ import java.util.concurrent.Executors;
  */
 public class InstanceProducer {
     public static void main(String[] args) {
-        int threadNum = 50;
+        int threadNum = 10;
         ExecutorService exec = Executors.newFixedThreadPool(threadNum);
         for (int i = 0; i < threadNum; i++) {
             exec.execute(new ProducerThread());

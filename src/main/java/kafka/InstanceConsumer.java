@@ -26,10 +26,10 @@ import java.util.concurrent.Executors;
  */
 public class InstanceConsumer {
     public static void main(String[] args) {
-        String groupId = args [0].trim();
-        int nThreads = Integer.parseInt(args[1].trim());
-//        String groupId = "2019-9-17 10:22:23";
-//        int nThreads = 50;
+//        String groupId = args [0].trim();
+//        int nThreads = Integer.parseInt(args[1].trim());
+        String groupId = "2019-9-17 18:22:53";
+        int nThreads = 10;
 
         ExecutorService exec = Executors.newFixedThreadPool(nThreads);
         Constant.consumerProps.setProperty("group.id", groupId);
@@ -42,7 +42,7 @@ public class InstanceConsumer {
             for (ConsumerRecord<String, String> record : records) {
                 ClusterInstance clusterInstance = JSON.parseObject(record.value(), ClusterInstance.class);
                 Instance inst = CreateInstances.getInstance(clusterInstance);
-                if (count == 100) {
+                if (count == 400) {
                     count = 0;
                     Instances newData = new Instances(data);
                     exec.execute(new OnlineEM(newData));

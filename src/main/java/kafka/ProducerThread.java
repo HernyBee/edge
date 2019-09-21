@@ -26,10 +26,9 @@ public class ProducerThread implements Runnable {
         Producer<String, String> producer = new KafkaProducer<>(Constant.producerProps);
         Random random = new Random();
         ClusterInstance instance = new ClusterInstance();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Timestamp now = new Timestamp(System.currentTimeMillis());
-        for (int i = 0; i < 100000; i++) {
-            instance.setTimestamp(simpleDateFormat.format(now.getTime()));
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS");
+        for (int i = 0; i < 10000; i++) {
+            instance.setTimestamp(simpleDateFormat.format(System.currentTimeMillis()));
             instance.setI1(random.nextDouble() * 100);
             instance.setI2(random.nextDouble() * 100);
             instance.setI3(random.nextDouble() * 100);
@@ -47,7 +46,7 @@ public class ProducerThread implements Runnable {
                 e.printStackTrace();
             }
             if ((i + 1) % 1000 == 0) {
-                System.out.println("线程:" + Thread.currentThread().getName() + "已发送第" + (i + 1) + "条");
+                System.out.println("线程:" + Thread.currentThread().getName() + ",时间:" + simpleDateFormat.format(System.currentTimeMillis()) + ",已发送第" + (i + 1) + "条");
             }
         }
         producer.close();

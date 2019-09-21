@@ -23,7 +23,7 @@ public class OnlineEM implements Runnable {
     @Override
     public void run() {
         try {
-            String timestamp = instances.get(instances.size() - 1).attribute(0).value(0);
+            String timestamp = instances.get(instances.size() - 1).toString(0);
             instances.deleteAttributeAt(0);
             // 2.初始化聚类器
             EM em = new EM();

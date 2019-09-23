@@ -1,5 +1,6 @@
 package algorithm;
 
+import util.DateUtil;
 import weka.clusterers.SimpleKMeans;
 import weka.core.Instances;
 
@@ -18,6 +19,9 @@ public class OnlineKmean implements Runnable {
     @Override
     public void run() {
         try {
+
+            String timestamp = instances.get(instances.size() - 1).toString(0);
+            instances.deleteAttributeAt(0);
             // 2.初始化聚类器
             SimpleKMeans simpleKMeans = new SimpleKMeans();
             simpleKMeans.setNumClusters(30);// 设置类别数量
@@ -25,23 +29,9 @@ public class OnlineKmean implements Runnable {
 
             // 3.使用聚类算法对样本进行聚类
             simpleKMeans.buildClusterer(instances);
+            System.out.println("线程:" + Thread.currentThread().getName() + ",最后一条数据产生时间:" + timestamp);
+            System.out.println("线程:" + Thread.currentThread().getName() + ",数据进入算法消费完成时间:" + DateUtil.getStandardDateTime(System.currentTimeMillis()));
 
-            // 4.打印聚类结果
-            Instances tempIns = simpleKMeans.getClusterCentroids();
-//            System.out.println(KM.toString());
-            System.out.println("CentroIds: " + tempIns);
-            System.out.println("finish time:" + System.currentTimeMillis());
-//            System.out.println("-------------------/n");
-//            int[] res = KM.getAssignments();
-//            System.out.println(Arrays.toString(res));
-//            for (int i = 0; i < tempIns.size(); i++) {
-//                Instance temp = tempIns.get(i);
-//                System.out.println(temp.numAttributes());
-//                for (int j = 0; j < temp.numAttributes(); j++) {
-//                    System.out.print(temp.value(j) + ",");
-//                }
-//                System.out.println("");
-//            }
         } catch (Exception e) {
             e.printStackTrace();
         }

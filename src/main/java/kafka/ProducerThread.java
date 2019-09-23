@@ -35,11 +35,11 @@ public class ProducerThread implements Runnable {
             instance.setI4(random.nextDouble() * 100);
             instance.setI5(random.nextDouble() * 100);
             //过滤
-//            if (instance.getI1() > instance.getI3()) {
-//                producer.send(new ProducerRecord<>("edge", instance.getTimestamp(), JSON.toJSONString(instance)));
-//            }
+            if (instance.getI1() > instance.getI3()) {
+                producer.send(new ProducerRecord<>("edge", instance.getTimestamp(), JSON.toJSONString(instance)));
+            }
             //不过滤
-            producer.send(new ProducerRecord<>("edge", instance.getTimestamp(), JSON.toJSONString(instance)));
+//            producer.send(new ProducerRecord<>("edge", instance.getTimestamp(), JSON.toJSONString(instance)));
             try {
                 TimeUnit.MILLISECONDS.sleep(10);
             } catch (InterruptedException e) {
